@@ -1,0 +1,182 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetMyFollowing } from "../hooks/useFollow";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { User, MapPin, Briefcase, ArrowLeft } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
+import { useFollow, useUnfollow } from "../hooks/useFollow";
+
+const MyFollowingPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [page, setPage] = React.useState(1);
+  const pageSize = 10;
+
+  const { data: followingData, isLoading, error } = useGetMyFollowing(
+    page,
+    pageSize
+  );
+
+  const followMutation = useFollow();
+  const unfollowMutation = useUnfollow();
+
+  const handleFollow = (id: string) => {
+    followMutation.mutate(id);
+  };
+
+  const handleUnfollow = (id: string) => {
+    unfollowMutation.mutate(id);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-muted/30 p-4 md:p-8">
+        <div className="max-w-4xl mx-auto">
+          <Skeleton className="h-12 w-48 mb-6" />
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className="h-24 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !followingData) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
+        <Card className="max-w-md border-0 shadow-md">
+          <CardContent className="pt-6">
+            <p className="text-destructive text-center">
+              Failed to load following. Please try again.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-muted/30 p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="rounded-full"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-2xl font-bold">My Following</h1>
+          <span className="text-muted-foreground">
+            ({followingData.totalCount})
+          </span>
+        </div>
+
+        {/* Following List */}
+        {followingData.items.length > 0 ? (
+          <div className="space-y-4">
+            {followingData.items.map((user) => (
+              <Card key={user.userId} className="border-0 shadow-sm">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-4">
+                    {/* Avatar */}
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      {user.profilePictureUrl ? (
+                        <img
+                          src={user.profilePictureUrl}
+                          alt={user.fullName}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <User className="h-6 w-6 text-primary" />
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-base truncate">
+                        {user.fullName}
+                      </h3>
+                      {user.jobTitle && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                          <Briefcase className="h-3 w-3" />
+                          <span className="truncate">{user.jobTitle}</span>
+                        </div>
+                      )}
+                      {user.country && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                          <MapPin className="h-3 w-3" />
+                          <span className="truncate">{user.country}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Follow Button */}
+                    {user.isFollowedByMe ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleUnfollow(user.userId)}
+                        disabled={unfollowMutation.isPending}
+                        className="rounded-full"
+                      >
+                        Unfollow
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => handleFollow(user.userId)}
+                        disabled={followMutation.isPending}
+                        className="rounded-full"
+                      >
+                        Follow
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {/* Pagination */}
+            {followingData.totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={!followingData.hasPreviousPage}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  Page {followingData.pageNumber} of {followingData.totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => p + 1)}
+                  disabled={!followingData.hasNextPage}
+                >
+                  Next
+                </Button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-8 text-center">
+              <User className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">Not following anyone yet</p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default MyFollowingPage;
