@@ -264,20 +264,20 @@ export function PostCard({ post, onDelete, onEdit }: PostCardProps) {
       </CardContent>
       
       <CardFooter className="px-2 py-1 flex items-center justify-between border-t border-border-subtle/50 mx-3 mb-2 mt-1">
-        <div className="flex items-center gap-1 w-full pt-1">
+        <div className="flex items-center gap-1 w-full pt-1 overflow-x-auto no-scrollbar sm:overflow-visible">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleLikeToggle}
             disabled={addLikeMutation.isPending || deleteLikeMutation.isPending}
-            className={`flex-1 h-10 rounded-md font-medium text-[13px] gap-2 transition-all ${
+            className={`flex-1 min-w-fit h-10 rounded-md font-medium text-[12px] sm:text-[13px] gap-1 sm:gap-2 transition-all px-2 ${
               localIsLiked 
                 ? "text-primary bg-primary/5 hover:bg-primary/10" 
                 : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
             }`}
           >
             <Heart
-              className={`h-4 w-4 transition-all duration-300 ${
+              className={`h-3.5 w-3.5 sm:h-4 sm:w-4 transition-all duration-300 ${
                 localIsLiked ? "fill-primary text-primary scale-110" : "scale-100"
               }`}
             />
@@ -288,13 +288,13 @@ export function PostCard({ post, onDelete, onEdit }: PostCardProps) {
             variant="ghost"
             size="sm"
             onClick={() => setShowComments(!showComments)}
-            className={`flex-1 h-10 rounded-md font-medium text-[13px] gap-2 transition-all ${
+            className={`flex-1 min-w-fit h-10 rounded-md font-medium text-[12px] sm:text-[13px] gap-1 sm:gap-2 transition-all px-2 ${
               showComments
                 ? "text-primary bg-primary/5 hover:bg-primary/10"
                 : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
             }`}
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             <span>Comment</span>
           </Button>
 
@@ -302,9 +302,9 @@ export function PostCard({ post, onDelete, onEdit }: PostCardProps) {
             variant="ghost"
             size="sm"
             onClick={handleShare}
-            className="flex-1 h-10 rounded-md font-medium text-[13px] text-muted-foreground hover:text-foreground hover:bg-surface-2 gap-2"
+            className="flex-1 min-w-fit h-10 rounded-md font-medium text-[12px] sm:text-[13px] text-muted-foreground hover:text-foreground hover:bg-surface-2 gap-1 sm:gap-2 px-2"
           >
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             <span>Share</span>
           </Button>
         </div>

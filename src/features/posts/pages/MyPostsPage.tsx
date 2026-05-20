@@ -49,10 +49,10 @@ export default function MyPostsPage() {
             </p>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center w-full sm:w-auto">
             <Button
               onClick={() => setIsCreateModalOpen(true)}
-              className="shadow-sm hover:shadow-md transition-all active:scale-95 bg-primary text-primary-foreground h-10 px-4 flex-shrink-0"
+              className="shadow-sm hover:shadow-md transition-all active:scale-95 bg-primary text-primary-foreground h-10 px-4 flex-shrink-0 w-full sm:w-auto"
             >
               <Plus className="h-4 w-4 mr-2" />
               Create Post

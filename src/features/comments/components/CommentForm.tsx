@@ -31,19 +31,20 @@ export function CommentForm({ postId, onSuccess }: CommentFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-3">
       <Textarea
         placeholder="Write a comment..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="min-h-[80px] resize-none bg-surface-2 border-border-subtle focus-visible:ring-primary/20"
+        className="min-h-[80px] resize-none bg-surface-2 border-border-subtle focus-visible:ring-primary/20 flex-1"
         disabled={addComment.isPending}
       />
       <Button
         type="submit"
         disabled={!content.trim() || addComment.isPending}
-        className="self-end h-[80px] px-4 bg-primary text-primary-foreground hover:bg-primary/90"
+        className="self-end sm:h-[80px] w-full sm:w-auto px-4 bg-primary text-primary-foreground hover:bg-primary/90 flex gap-2"
       >
+        <span className="sm:hidden text-sm">Post Comment</span>
         <Send className="h-4 w-4" />
       </Button>
     </form>

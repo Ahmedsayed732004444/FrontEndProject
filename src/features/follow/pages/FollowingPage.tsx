@@ -60,33 +60,33 @@ const FollowingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30 p-4 md:p-8">
+    <div className="min-h-screen bg-muted/30 p-2 sm:p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 px-2 sm:px-0">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            className="rounded-full"
+            className="rounded-full h-8 w-8 sm:h-10 sm:w-10"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Following</h1>
-          <span className="text-muted-foreground">
+          <h1 className="text-xl sm:text-2xl font-bold">Following</h1>
+          <span className="text-muted-foreground text-sm sm:text-base">
             ({followingData.totalCount})
           </span>
         </div>
 
         {/* Following List */}
         {followingData.items.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {followingData.items.map((user) => (
               <Card key={user.userId} className="border-0 shadow-sm">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-center gap-2 sm:gap-4">
                     {/* Avatar */}
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       {user.profilePictureUrl ? (
                         <img
                           src={user.profilePictureUrl}
@@ -94,24 +94,24 @@ const FollowingPage: React.FC = () => {
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
-                        <User className="h-6 w-6 text-primary" />
+                        <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                       )}
                     </div>
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-base truncate">
+                      <h3 className="font-semibold text-sm sm:text-base truncate">
                         {user.fullName}
                       </h3>
                       {user.jobTitle && (
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                          <Briefcase className="h-3 w-3" />
+                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
+                          <Briefcase className="h-3 w-3 shrink-0" />
                           <span className="truncate">{user.jobTitle}</span>
                         </div>
                       )}
                       {user.country && (
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                          <MapPin className="h-3 w-3" />
+                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
+                          <MapPin className="h-3 w-3 shrink-0" />
                           <span className="truncate">{user.country}</span>
                         </div>
                       )}
@@ -124,7 +124,7 @@ const FollowingPage: React.FC = () => {
                         size="sm"
                         onClick={() => handleUnfollow(user.userId)}
                         disabled={unfollowMutation.isPending}
-                        className="rounded-full"
+                        className="rounded-full text-xs sm:text-sm px-3 sm:px-4 shrink-0"
                       >
                         Unfollow
                       </Button>
@@ -133,7 +133,7 @@ const FollowingPage: React.FC = () => {
                         size="sm"
                         onClick={() => handleFollow(user.userId)}
                         disabled={followMutation.isPending}
-                        className="rounded-full"
+                        className="rounded-full text-xs sm:text-sm px-3 sm:px-4 shrink-0"
                       >
                         Follow
                       </Button>

@@ -63,8 +63,8 @@ export function CommentItem({ comment, postId, currentUserId }: CommentItemProps
   };
 
   return (
-    <div className="flex gap-3 p-4 bg-surface-1 rounded-lg">
-      <div className="h-10 w-10 rounded-full bg-surface-2 flex items-center justify-center overflow-hidden flex-shrink-0">
+    <div className="flex gap-2 sm:gap-3 p-3 sm:p-4 bg-surface-1 rounded-lg">
+      <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-surface-2 flex items-center justify-center overflow-hidden flex-shrink-0">
         {comment.author.profilePictureUrl ? (
           <img
             src={comment.author.profilePictureUrl}
@@ -72,18 +72,18 @@ export function CommentItem({ comment, postId, currentUserId }: CommentItemProps
             className="h-full w-full object-cover"
           />
         ) : (
-          <User className="h-5 w-5 text-muted-foreground" />
+          <User className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-semibold text-sm text-foreground">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-1">
+              <span className="font-semibold text-sm text-foreground truncate max-w-full">
                 {comment.author.fullName}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
                 {formatTimeAgo(comment.createdAt)}
               </span>
             </div>
@@ -94,17 +94,17 @@ export function CommentItem({ comment, postId, currentUserId }: CommentItemProps
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-destructive flex-shrink-0"
+              className="h-7 w-7 sm:h-8 sm:w-8 text-muted-foreground hover:text-destructive flex-shrink-0"
               onClick={handleDelete}
               disabled={deleteComment.isPending}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
           )}
         </div>
 
         {/* Action row */}
-        <div className="flex items-center gap-4 mt-3">
+        <div className="flex items-center gap-2 sm:gap-4 mt-2 sm:mt-3">
           <Button
             variant="ghost"
             size="sm"

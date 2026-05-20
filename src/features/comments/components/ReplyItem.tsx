@@ -43,8 +43,8 @@ export function ReplyItem({ reply, postId, currentUserId }: ReplyItemProps) {
   const isOwnReply = reply.author.userId === currentUserId;
 
   return (
-    <div className="flex gap-3 p-3 bg-surface-2 rounded-lg ml-12">
-      <div className="h-8 w-8 rounded-full bg-surface-1 flex items-center justify-center overflow-hidden flex-shrink-0">
+    <div className="flex gap-2 sm:gap-3 p-2 sm:p-3 bg-surface-2 rounded-lg ml-4 sm:ml-12">
+      <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-surface-1 flex items-center justify-center overflow-hidden flex-shrink-0">
         {reply.author.profilePictureUrl ? (
           <img
             src={reply.author.profilePictureUrl}
@@ -52,18 +52,18 @@ export function ReplyItem({ reply, postId, currentUserId }: ReplyItemProps) {
             className="h-full w-full object-cover"
           />
         ) : (
-          <User className="h-4 w-4 text-muted-foreground" />
+          <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-semibold text-sm text-foreground">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-1">
+              <span className="font-semibold text-sm text-foreground truncate max-w-full">
                 {reply.author.fullName}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
                 {formatTimeAgo(reply.createdAt)}
               </span>
             </div>

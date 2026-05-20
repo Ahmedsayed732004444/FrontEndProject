@@ -33,15 +33,15 @@ export function ReplyForm({ commentId, postId, onSuccess, onCancel }: ReplyFormP
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mt-3">
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 mt-3">
       <Textarea
         placeholder="Write a reply..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="min-h-[60px] resize-none bg-surface-2 border-border-subtle focus-visible:ring-primary/20 text-sm"
+        className="min-h-[60px] resize-none bg-surface-2 border-border-subtle focus-visible:ring-primary/20 text-sm flex-1"
         disabled={addReply.isPending}
       />
-      <div className="flex gap-2 self-end">
+      <div className="flex gap-2 sm:self-end justify-end">
         {onCancel && (
           <Button
             type="button"
@@ -49,6 +49,7 @@ export function ReplyForm({ commentId, postId, onSuccess, onCancel }: ReplyFormP
             size="sm"
             onClick={onCancel}
             disabled={addReply.isPending}
+            className="flex-1 sm:flex-none"
           >
             Cancel
           </Button>
@@ -57,8 +58,9 @@ export function ReplyForm({ commentId, postId, onSuccess, onCancel }: ReplyFormP
           type="submit"
           size="sm"
           disabled={!content.trim() || addReply.isPending}
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 sm:flex-none flex gap-2"
         >
+          <span className="sm:hidden">Reply</span>
           <Send className="h-4 w-4" />
         </Button>
       </div>
