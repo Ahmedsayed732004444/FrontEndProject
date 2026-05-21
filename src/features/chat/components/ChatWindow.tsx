@@ -93,10 +93,10 @@ export function ChatWindow({ otherUserId, otherUserName }: ChatWindowProps) {
     }
   }, [messages]);
 
-  // Scroll to bottom when new message arrives
+  // Scroll to bottom only when a new message is added (length changes)
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [localMessages]);
+  }, [localMessages.length]);
 
   const allMessages = localMessages;
 

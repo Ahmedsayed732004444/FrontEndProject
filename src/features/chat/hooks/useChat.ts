@@ -15,6 +15,7 @@ export const useGetConversation = (otherUserId: string, enabled = true) => {
     queryKey: CHAT_QUERY_KEYS.conversation(otherUserId),
     queryFn: () => chatService.getConversation(otherUserId),
     enabled: enabled && !!otherUserId,
+    refetchInterval: 3000, // Poll every 3 seconds to update read receipts
   });
 };
 
