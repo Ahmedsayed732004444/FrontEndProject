@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Bell, Briefcase, ShieldAlert, FileText, CheckCircle2, Trash2, MailOpen } from "lucide-react";
 import { useNotifications } from "../context/NotificationsContext";
 import type { Notification } from "../types/notifications";
@@ -10,6 +11,7 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification }: NotificationItemProps) {
+  const navigate = useNavigate();
   const { markAsRead, deleteNotification } = useNotifications();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -43,13 +45,59 @@ export function NotificationItem({ notification }: NotificationItemProps) {
     }
   };
 
+  const getInitials = (name?: string) => {
+    if (!name) return null;
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  const handleNotificationClick = async () => {
+    if (!notification.isRead) {
+      await markAsRead(notification.id);
+    }
+    
+    // Determine where to navigate based on entityType
+    switch (notification.entityType) {
+      case "JobApplication":
+        navigate("/job-tracker");
+        break;
+      case "Job":
+        navigate(`/jobs/${notification.entityId}`);
+        break;
+      case "Post":
+        navigate("/posts");
+        break;
+      case "User":
+      case "Follow":
+        navigate(`/profile/${notification.actorId}`);
+        break;
+      default:
+        // Default to actor's profile if applicable
+        if (notification.actorId) {
+          navigate(`/profile/${notification.actorId}`);
+        }
+        break;
+    }
+  };
+
+  const handleActorClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent clicking the container
+    if (notification.actorId) {
+      navigate(`/profile/${notification.actorId}`);
+    }
+  };
+
   return (
     <div
+      onClick={handleNotificationClick}
       className={cn(
-        "group relative flex gap-4 p-4 rounded-xl border transition-all duration-200",
+        "group relative flex gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer hover:shadow-sm",
         notification.isRead
-          ? "bg-surface-0 border-border-subtle"
-          : "bg-primary/5 border-primary/20",
+          ? "bg-surface-0 border-border-subtle hover:border-border-muted"
+          : "bg-primary/5 border-primary/20 hover:border-primary/30",
         isDeleting ? "opacity-50 pointer-events-none" : ""
       )}
     >
@@ -59,13 +107,21 @@ export function NotificationItem({ notification }: NotificationItemProps) {
       )}
 
       {/* Avatar / Icon */}
-      <div className="shrink-0 pt-1">
+      <div 
+        className="shrink-0 pt-1" 
+        onClick={handleActorClick}
+        title={notification.actorName ? `Go to ${notification.actorName}'s profile` : ""}
+      >
         {notification.actorPhotoUrl ? (
           <img
             src={notification.actorPhotoUrl}
             alt={notification.actorName}
-            className="h-10 w-10 rounded-full object-cover"
+            className="h-10 w-10 rounded-full object-cover border border-border-subtle hover:ring-2 ring-primary/20 transition-all"
           />
+        ) : notification.actorName ? (
+          <div className="h-10 w-10 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center border border-primary/20 hover:ring-2 ring-primary/30 transition-all">
+            {getInitials(notification.actorName)}
+          </div>
         ) : (
           <div className="h-10 w-10 rounded-full bg-surface-1 flex items-center justify-center">
             {getIcon()}
