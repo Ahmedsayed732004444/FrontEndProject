@@ -7,14 +7,18 @@ import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { ThemedToaster } from "@/shared/components/ThemedToaster";
 import MainRouter from "./routes";
 
+import { NotificationsProvider } from "@/features/notifications/context/NotificationsContext";
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
           <AuthProvider>
-            <MainRouter />
-            <ThemedToaster />
+            <NotificationsProvider>
+              <MainRouter />
+              <ThemedToaster />
+            </NotificationsProvider>
           </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>

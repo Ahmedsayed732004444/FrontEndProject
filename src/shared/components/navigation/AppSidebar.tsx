@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { type LucideIcon, Settings, LogOut, HelpCircle } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useNotifications } from "@/features/notifications/context/NotificationsContext";
 
 export interface SidebarLink {
   label: string;
@@ -35,6 +36,7 @@ interface AppSidebarProps {
 const AppSidebar = ({ config }: AppSidebarProps) => {
   const location = useLocation();
   const { logout } = useAuth();
+  const { unreadCount } = useNotifications();
   const { setOpenMobile, isMobile } = useSidebar();
 
   const handleLinkClick = () => {
@@ -119,17 +121,24 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
                           : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                       )}
                     >
-                      <Link to={link.path} className="flex items-center gap-3">
-                        <Icon
-                          className={cn(
-                            "h-4 w-4 shrink-0 transition-colors",
-                            active
-                              ? "text-sidebar-primary"
-                              : "text-sidebar-foreground/50"
-                          )}
-                          aria-hidden="true"
-                        />
-                        <span>{link.label}</span>
+                      <Link to={link.path} className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-3">
+                          <Icon
+                            className={cn(
+                              "h-4 w-4 shrink-0 transition-colors",
+                              active
+                                ? "text-sidebar-primary"
+                                : "text-sidebar-foreground/50"
+                            )}
+                            aria-hidden="true"
+                          />
+                          <span>{link.label}</span>
+                        </div>
+                        {link.label === "Notifications" && unreadCount > 0 && (
+                          <span className="bg-destructive text-destructive-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shrink-0">
+                            {unreadCount > 99 ? "99+" : unreadCount}
+                          </span>
+                        )}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

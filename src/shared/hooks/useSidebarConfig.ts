@@ -8,6 +8,7 @@ import {
   Building2,
   Shield,
   FileText,
+  Bell,
 } from "lucide-react";
 import { usePermissions } from "@/features/auth/hooks/usePermissions";
 import { authService } from "@/features/auth/services/authService";
@@ -23,6 +24,7 @@ export const useSidebarConfig = (): SidebarConfig | null => {
   // Core tabs visible to every authenticated user (role: user/member)
   const navigationLinks = [
     { label: "Profile", path: "/profile", icon: User },
+    { label: "Notifications", path: "/notifications", icon: Bell },
     { label: "Jobs", path: "/jobs", icon: Briefcase },
     { label: "Job Tracker", path: "/job-tracker", icon: ClipboardList },
     { label: "AI Analysis", path: "/ai", icon: Brain },

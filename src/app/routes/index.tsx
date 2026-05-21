@@ -33,6 +33,7 @@ import FollowersPage from "@/features/follow/pages/FollowersPage";
 import FollowingPage from "@/features/follow/pages/FollowingPage";
 import MyFollowersPage from "@/features/follow/pages/MyFollowersPage";
 import MyFollowingPage from "@/features/follow/pages/MyFollowingPage";
+import NotificationsPage from "@/features/notifications/pages/NotificationsPage";
 
 const MainRouter = () => {
   const { isAuthenticated } = useAuth();
@@ -47,6 +48,7 @@ const MainRouter = () => {
 
         <Route element={<AppLayout />}>
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/profile/my/followers" element={<MyFollowersPage />} />
           <Route path="/profile/my/following" element={<MyFollowingPage />} />
           <Route path="/profile/:userId/followers" element={<FollowersPage />} />
