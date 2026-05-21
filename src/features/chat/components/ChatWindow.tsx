@@ -20,7 +20,6 @@ export function ChatWindow({ otherUserId, otherUserName }: ChatWindowProps) {
   const [connState, setConnState] = useState<signalR.HubConnectionState>(
     signalR.HubConnectionState.Disconnected
   );
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Extract user ID robustly (fallback to token if user.id is missing or named differently)
   const currentUserId = useMemo(() => {
@@ -93,11 +92,6 @@ export function ChatWindow({ otherUserId, otherUserName }: ChatWindowProps) {
     }
   }, [messages]);
 
-  // Scroll to bottom only when a new message is added (length changes)
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [localMessages.length]);
-
   const allMessages = localMessages;
 
   return (
@@ -132,9 +126,6 @@ export function ChatWindow({ otherUserId, otherUserName }: ChatWindowProps) {
         currentUserId={currentUserId}
         isLoading={isLoading}
       />
-
-      {/* Scroll to bottom ref */}
-      <div ref={messagesEndRef} />
 
       {/* Input */}
       <MessageInput

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { MessageBubble } from "./MessageBubble";
 import { Loader2 } from "lucide-react";
 import type { Message } from "../types/chat";
@@ -9,9 +10,19 @@ interface MessageListProps {
 }
 
 export function MessageList({ messages, currentUserId, isLoading }: MessageListProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to bottom when messages are loaded or new message arrives
+  useEffect(() => {
+    // Small timeout ensures the DOM has updated before scrolling
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+    }, 100);
+  }, [messages?.length]);
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-8">
+      <div className="flex items-center justify-center py-8 flex-1">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
@@ -19,7 +30,7 @@ export function MessageList({ messages, currentUserId, isLoading }: MessageListP
 
   if (!messages || messages.length === 0) {
     return (
-      <div className="flex items-center justify-center py-8">
+      <div className="flex items-center justify-center py-8 flex-1">
         <p className="text-muted-foreground text-sm">No messages yet. Start a conversation!</p>
       </div>
     );
@@ -34,6 +45,7 @@ export function MessageList({ messages, currentUserId, isLoading }: MessageListP
           currentUserId={currentUserId}
         />
       ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 }
