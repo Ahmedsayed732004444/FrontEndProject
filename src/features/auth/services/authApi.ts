@@ -41,7 +41,11 @@ export const authApi = {
     await authClient.post("/auth/confirm-email", data);
   },
   refreshToken: async (data: RefreshTokenRequest): Promise<RefreshTokenResponse> => {
-    const response = await authClient.post<RefreshTokenResponse>("/Auth/refresh", data);
+    const response = await authClient.post<RefreshTokenResponse>("/Auth/refresh", data, {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    });
     return response.data;
   },
   revokeRefreshToken: async (data: RevokeRefreshTokenRequest): Promise<void> => {

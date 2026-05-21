@@ -83,36 +83,42 @@ const MyFollowingPage: React.FC = () => {
               <Card key={user.userId} className="border-0 shadow-sm">
                 <CardContent className="p-3 sm:p-4">
                   <div className="flex items-center gap-2 sm:gap-4">
-                    {/* Avatar */}
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      {user.profilePictureUrl ? (
-                        <img
-                          src={user.profilePictureUrl}
-                          alt={user.fullName}
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      ) : (
-                        <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                      )}
-                    </div>
+                    {/* Clickable Area for Profile Navigation */}
+                    <div 
+                      className="flex items-center gap-2 sm:gap-4 flex-1 cursor-pointer hover:opacity-80 transition-opacity min-w-0"
+                      onClick={() => navigate(`/profile/${user.userId}`)}
+                    >
+                      {/* Avatar */}
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        {user.profilePictureUrl ? (
+                          <img
+                            src={user.profilePictureUrl}
+                            alt={user.fullName}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        ) : (
+                          <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                        )}
+                      </div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm sm:text-base truncate">
-                        {user.fullName}
-                      </h3>
-                      {user.jobTitle && (
-                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
-                          <Briefcase className="h-3 w-3 shrink-0" />
-                          <span className="truncate">{user.jobTitle}</span>
-                        </div>
-                      )}
-                      {user.country && (
-                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
-                          <MapPin className="h-3 w-3 shrink-0" />
-                          <span className="truncate">{user.country}</span>
-                        </div>
-                      )}
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-sm sm:text-base truncate">
+                          {user.fullName}
+                        </h3>
+                        {user.jobTitle && (
+                          <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
+                            <Briefcase className="h-3 w-3 shrink-0" />
+                            <span className="truncate">{user.jobTitle}</span>
+                          </div>
+                        )}
+                        {user.country && (
+                          <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
+                            <MapPin className="h-3 w-3 shrink-0" />
+                            <span className="truncate">{user.country}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Follow Button */}

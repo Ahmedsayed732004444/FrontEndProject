@@ -27,6 +27,7 @@ import { PostCard } from "@/features/posts/components/PostCard";
 import { CreatePostModal } from "@/features/posts/components/CreatePostModal";
 import { Button } from "@/shared/components/ui/button";
 import { useFollow, useUnfollow } from "@/features/follow/hooks/useFollow";
+import { ChatModal } from "@/features/chat/components/ChatModal";
 
 /* ── helpers ── */
 const getGenderText = (gender: number | null) => {
@@ -84,6 +85,7 @@ const ProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { logout, user, isLoading: isAuthLoading } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = React.useState(false);
 
   // Check if it's own profile by comparing userId with logged-in user's id
   const isOwnProfileById = !userId || userId === "undefined" || userId === user?.id;
@@ -289,7 +291,10 @@ const ProfilePage: React.FC = () => {
                       <UserPlus className="w-4 h-4" /> Follow
                     </Button>
                   )}
-                  <Button className="flex-1 lg:flex-none h-14 px-8 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-black text-xs uppercase tracking-widest gap-3 shadow-xl transition-all active:scale-[0.98]">
+                  <Button
+                    onClick={() => setIsChatModalOpen(true)}
+                    className="flex-1 lg:flex-none h-14 px-8 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-black text-xs uppercase tracking-widest gap-3 shadow-xl transition-all active:scale-[0.98]"
+                  >
                     <Mail className="w-4 h-4" /> Message
                   </Button>
                 </>
@@ -501,6 +506,13 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <ChatModal
+        isOpen={isChatModalOpen}
+        onClose={() => setIsChatModalOpen(false)}
+        otherUserId={userId || ""}
+        otherUserName={profile?.fullName || ""}
+      />
       
       <CreatePostModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
     </div>

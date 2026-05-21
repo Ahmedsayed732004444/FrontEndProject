@@ -43,14 +43,14 @@ class ApiClient {
     // REQUEST INTERCEPTOR: Add token to every request
     // ══════════════════════════════════════════════════════════
     this.client.interceptors.request.use(
-      async (config: InternalAxiosRequestConfig) => {
+      (config: InternalAxiosRequestConfig) => {
         // Skip auth header for /auth routes
         if (isAuthApiPath(config.url)) {
           return config;
         }
 
-        // Ensure token is valid (refresh if expiring soon)
-        const token = await authService.ensureValidToken();
+        // ✅ بعت التوكن الموجود بس — مش ensureValidToken
+        const token = authService.getToken();
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -101,6 +101,24 @@ class ApiClient {
           // ─────────────────────────────────────────────────────
           originalRequest._retry = true;
           this.isRefreshingToken = true;
+
+          // ✅ تأكد إن authService مش بيعمل refresh بالفعل
+          if (authService.isRefreshing()) {
+            return authService.refreshToken()
+              .then((res) => {
+                if (originalRequest.headers) {
+                  originalRequest.headers.Authorization = `Bearer ${res.token}`;
+                }
+                return this.client(originalRequest);
+              })
+              .catch(() => {
+                authService.clearAuthData();
+                return Promise.reject(error);
+              })
+              .finally(() => {
+                this.isRefreshingToken = false;
+              });
+          }
 
           const currentRefreshToken = authService.getRefreshToken();
           console.log("Current refresh token exists:", !!currentRefreshToken);
