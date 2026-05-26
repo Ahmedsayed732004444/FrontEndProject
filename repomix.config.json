@@ -1,0 +1,25 @@
+{
+  "output": {
+    "filePath": "ai-context.md",
+    "style": "markdown"
+  },
+  "ignore": {
+    "customPatterns": [
+      "ai-context.md",
+      "repomix-output.xml",
+      "**/*.css",
+      "**/*.min.js",
+      "**/*.lock",
+      "**/node_modules/**",
+      "**/*.svg",
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.ico",
+      "**/*.woff",
+      "**/*.woff2",
+      "**/__snapshots__/**",
+      "**/dist/**",
+      "**/build/**"
+    ]
+  }
+}

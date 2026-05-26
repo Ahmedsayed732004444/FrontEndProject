@@ -16,12 +16,11 @@ const OAuthCallback: React.FC = () => {
     const email = searchParams.get("email");
     const firstName = searchParams.get("firstName");
     const lastName = searchParams.get("lastName");
+    const refreshTokenExpiration = searchParams.get("refreshTokenExpiration"); // ✅ زود
 
     if (token && refreshToken && expiresIn && userId && email) {
-      // Parse expiresIn to number
       const expiresInNumber = parseInt(expiresIn, 10);
 
-      // Create user object
       const user = {
         id: userId,
         email: email,
@@ -29,13 +28,10 @@ const OAuthCallback: React.FC = () => {
         lastName: lastName || "",
       };
 
-      // Save data using the auth context login method
-      login(user, token, refreshToken, expiresInNumber);
+      login(user, token, refreshToken, expiresInNumber, refreshTokenExpiration || undefined); // ✅ زود
 
-      // Redirect to home page
-      navigate("/", { replace: true });
+      navigate("/profile", { replace: true }); // ✅ صح
     } else {
-      // If any required param is missing, redirect to login
       console.error("Missing required OAuth parameters");
       navigate("/login", { replace: true });
     }
